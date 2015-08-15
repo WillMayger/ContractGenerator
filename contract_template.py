@@ -6,7 +6,8 @@ class ContractGenerator:
 
     def __init__(self, client_name, client_address, client_town, client_country, client_postcode,
                  service_provider_name, service_provider_address, service_provider_town,
-                 service_provider_country, service_provider_postcode, service_provided):
+                 service_provider_country, service_provider_postcode, service_provided, currency,
+                 cost):
 
         # date time
         now = datetime.now()
@@ -25,6 +26,12 @@ class ContractGenerator:
         self.client_town = client_town
         self.client_country = client_country
         self.client_postcode = client_postcode
+
+        # currency
+        self.currency_letters = currency
+
+        # cost
+        self.cost = cost
 
         # service provider info
         self.service_provider_name = service_provider_name
@@ -109,6 +116,57 @@ class ContractGenerator:
             ' The Service Provider hereby agrees to provide such Services to the Customer.'
         )
 
+    def terms_of_agreement(self):
+
+        self.contract.add_heading(
+            'Term of Agreement:\n', 3)
+
+        self.contract.add_paragraph(
+            '1. The term of this Agreement (the "Term") will begin on the date of this Agreement and will remain ' +
+            'in full force and effect until the completion of the Services, subject to earlier termination as ' +
+            'provided in this Agreement. The Term of this Agreement may be extended by mutual written agreement ' +
+            'of the Parties.'
+            )
+
+        self.contract.add_paragraph(
+            '2. In the event that either Party wishes to terminate this Agreement, that Party will be required ' +
+            'to provide 3 days notice to the other Party.'
+            )
+
+    def performance(self):
+
+        self.contract.add_heading(
+            'Performance:\n', 3)
+
+        self.contract.add_paragraph(
+            '1. The Parties agree to do everything necessary to ensure that the terms of this Agreement take effect.'
+            )
+
+    def currency(self):
+
+        self.contract.add_heading(
+            'Currency:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. Except as otherwise provided in this Agreement, all monetary amounts referred' +
+            ' to in this Agreement are in {0}.'.format(self.currency)
+        )
+
+    def compensation(self):
+
+        self.contract.add_heading(
+            'Compensation:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. For the services rendered by the Service Provider as required by this Agreement, ' +
+            'the Customer will provide compensation (the "Compensation") to the Service Provider ' +
+            'of a fixed amount of ' +
+            '163'.encode() +
+            ' {0}.'.format(self.cost)
+        )
+
     def save(self):
 
         self.contract.save('contract.docx')
@@ -116,10 +174,14 @@ class ContractGenerator:
 
 cg = ContractGenerator("Mr Example", "93 london drive", "camden", "london", "LON DON",
                        "Mr Company Example", "93 Company drive", "Regents Place", "London", "LON DON",
-                       "Responsive Website Development with up to date responsive devices to work across all devices."
-                       )
+                       "Responsive Website Development with up to date responsive devices to work across all devices.",
+                       "GBP", "100000.00")
 cg.heading()
 cg.client_and_service_info()
 cg.background()
 cg.in_consideration_of()
+cg.terms_of_agreement()
+cg.performance()
+cg.currency()
+cg.compensation()
 cg.save()
