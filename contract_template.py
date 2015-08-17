@@ -1,13 +1,15 @@
 from docx import Document
 from datetime import datetime
 
+# ToDo
+# fix so it will use the GBP sign symbol in method compensation
 
 class ContractGenerator:
 
     def __init__(self, client_name, client_address, client_town, client_country, client_postcode,
                  service_provider_name, service_provider_address, service_provider_town,
                  service_provider_country, service_provider_postcode, service_provided, currency,
-                 cost):
+                 cost, client_fax, client_email):
 
         # date time
         now = datetime.now()
@@ -26,6 +28,8 @@ class ContractGenerator:
         self.client_town = client_town
         self.client_country = client_country
         self.client_postcode = client_postcode
+        self.client_fax = client_fax
+        self.client_email = client_email
 
         # currency
         self.currency_letters = currency
@@ -167,6 +171,121 @@ class ContractGenerator:
             ' {0}.'.format(self.cost)
         )
 
+        self.contract.add_paragraph(
+            '2. The Compensation will be payable upon completion of the Services.'
+        )
+
+        self.contract.add_paragraph(
+            '3. The Service Provider will be responsible for all income tax liabilities' +
+            ' and National Insurance or similar contributions relating to the Compensation' +
+            ' and the Service Provider will indemnify the Company in respect of any such payments' +
+            ' required to be made by the Company.'
+        )
+
+    def confidentiality(self):
+
+        self.contract.add_heading(
+            'Confidentiality:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. Confidential information (the "Confidential Information") refers to any ' +
+            'data or information relating to the Customer, whether business or personal, ' +
+            'which would reasonably be considered to be private or proprietary to the ' +
+            'Customer and that is not generally known and where the release of that ' +
+            'Confidential Information could reasonably be expected to cause harm to the Customer.'
+        )
+
+        self.contract.add_paragraph(
+            '2. The Service Provider agrees that they will not disclose, divulge, reveal, ' +
+            'report or use, for any purpose, any Confidential Information which the Service ' +
+            'Provider has obtained, except as authorized by the Customer. This obligation ' +
+            'will survive indefinitely upon termination of this Agreement.'
+        )
+
+        self.contract.add_paragraph(
+            '3. All written and oral information and material disclosed or provided by the ' +
+            'Customer to the Service Provider under this Agreement is Confidential Information ' +
+            'regardless of whether it was provided before or after the date of this Agreement ' +
+            'or how it was provided to the Service Provider.'
+        )
+
+    def ownership_materials_intellectual_property(self):
+
+        self.contract.add_heading(
+            'Ownership of Materials and Intellectual Property:\n',
+            3
+        )
+
+        self.contract.add_paragraph(
+            '1. All intellectual property and related material (the "Intellectual Property") ' +
+            'including any related work in progress that is developed or produced under this ' +
+            'Agreement, will be the sole property of the Customer. The use of the Intellectual ' +
+            'Property by the Customer will not be restricted in any manner.'
+        )
+
+        self.contract.add_paragraph(
+            '2. The Service Provider may not use the Intellectual Property for any ' +
+            'purpose other than that contracted for in this Agreement except with the ' +
+            'written consent of the Customer. The Service Provider will be responsible ' +
+            'for any and all damages resulting from the unauthorized use of the Intellectual Property.'
+        )
+
+    def return_of_property(self):
+
+        self.contract.add_heading(
+            'Return of Property:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. Upon the expiry or termination of this Agreement, the Service Provider ' +
+            'will return to the Customer any property, documentation, records, or Confidential ' +
+            'Information which is the property of the Customer.'
+        )
+
+    def capacity_independent_contractor(self):
+
+        self.contract.add_heading(
+            'Capacity/Independent Contractor:\n',
+            3
+        )
+
+        self.contract.add_paragraph(
+            'In providing the Services under this Agreement it is ' +
+            'expressly agreed that the Service Provider is acting as an ' +
+            'independent contractor and not as an employee. The Service ' +
+            'Provider and the Customer acknowledge that this Agreement does not create a ' +
+            'partnership or joint venture between them, and is exclusively a contract for service.'
+        )
+
+    def notice(self):
+
+        self.contract.add_heading(
+            'Notice:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            'All notices, requests, demands or other communications required or ' +
+            'permitted by the terms of this Agreement will be given in writing and ' +
+            'delivered to the Parties of this Agreement as follows:'
+        )
+
+        self.contract.add_paragraph(
+            str(
+                '{0}' +
+                '{1}' +
+                '{2}, {3},{4}' +
+                'Fax: {5}' +
+                'Email: {6}'
+            ).format(
+            self.client_name,
+            self.client_address,
+            self.client_town, self.client_country, self.client_postcode,
+            self.client_fax,
+            self.client_email
+            )
+        )
+
     def save(self):
 
         self.contract.save('contract.docx')
@@ -175,7 +294,7 @@ class ContractGenerator:
 cg = ContractGenerator("Mr Example", "93 london drive", "camden", "london", "LON DON",
                        "Mr Company Example", "93 Company drive", "Regents Place", "London", "LON DON",
                        "Responsive Website Development with up to date responsive devices to work across all devices.",
-                       "GBP", "100000.00")
+                       "GBP", "100000.00", "fax", "example@example.com")
 cg.heading()
 cg.client_and_service_info()
 cg.background()
@@ -184,4 +303,9 @@ cg.terms_of_agreement()
 cg.performance()
 cg.currency()
 cg.compensation()
+cg.confidentiality()
+cg.ownership_materials_intellectual_property()
+cg.return_of_property()
+cg.capacity_independent_contractor()
+cg.notice()
 cg.save()
