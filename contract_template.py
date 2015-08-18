@@ -9,8 +9,8 @@ class ContractGenerator:
     def __init__(self, client_name, client_address, client_town, client_country, client_postcode, client_fax,
                  client_email,
                  service_provider_name, service_provider_address, service_provider_town,
-                 service_provider_fax, service_provider_email,
-                 service_provider_country, service_provider_postcode, service_provided, currency,
+                 service_provider_country, service_provider_postcode,
+                 service_provider_fax, service_provider_email, service_provided, currency,
                  cost):
 
         # date time
@@ -34,7 +34,7 @@ class ContractGenerator:
         self.client_email = client_email
 
         # currency
-        self.currency_letters = currency
+        self.currency_unit = currency
 
         # cost
         self.cost = cost
@@ -158,7 +158,7 @@ class ContractGenerator:
 
         self.contract.add_paragraph(
             '1. Except as otherwise provided in this Agreement, all monetary amounts referred' +
-            ' to in this Agreement are in {0}.'.format(self.currency)
+            ' to in this Agreement are in {0}.'.format(self.currency_unit)
         )
 
     def compensation(self):
@@ -278,7 +278,7 @@ class ContractGenerator:
             str(
                 '1. {0}\n' +
                 '2. {1}\n' +
-                '3. {2}, {3},{4}\n' +
+                '3. {2}, {3}, {4}\n' +
                 '4. Fax: {5}\n' +
                 '5. Email: {6}\n'
             ).format(
@@ -294,7 +294,7 @@ class ContractGenerator:
             str(
                 '1. {0}\n' +
                 '2. {1}\n' +
-                '3. {2}, {3},{4}\n' +
+                '3. {2}, {3}, {4}\n' +
                 '4. Fax: {5}\n' +
                 '5. Email: {6}\n'
             ).format(
@@ -362,6 +362,114 @@ class ContractGenerator:
             'written consent of the Customer.'
         )
 
+    def entire_agreement(self):
+        self.contract.add_heading(
+            'Entire Agreement:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. It is agreed that there is no representation, warranty, collateral agreement ' +
+            'or condition affecting this Agreement except as expressly provided in this Agreement.'
+        )
+
+    def enurement(self):
+
+        self.contract.add_heading(
+            'Enurement:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. This Agreement will enure to the benefit of and be binding on the Parties ' +
+            'and their respective heirs, executors, administrators, successors and permitted assigns.'
+        )
+
+    def titles_headings(self):
+
+        self.contract.add_heading(
+            'Titles/Headings:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. Headings are inserted for the convenience of the Parties ' +
+            'only and are not to be considered when interpreting this Agreement.'
+        )
+
+    def gender(self):
+
+        self.contract.add_heading(
+            'Gender:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. Words in the singular mean and include the plural and vice versa. ' +
+            'Words in the masculine mean and include the feminine and vice versa.'
+        )
+
+    def governing_law(self):
+
+        self.contract.add_heading(
+            'Governing Law:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. It is the intention of the Parties to this Agreement that this Agreement ' +
+            'and the performance under this Agreement, and all suits and special proceedings ' +
+            'under this Agreement, be construed in accordance with and governed, to the ' +
+            'exclusion of the law of any other forum, by the laws of the Country of England, ' +
+            'without regard to the jurisdiction in which any action or special proceeding may be instituted.'
+        )
+
+    def severability(self):
+
+        self.contract.add_heading(
+            'Severability:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            'In the event that any of the provisions of this Agreement are held to be ' +
+            'invalid or unenforceable in whole or in part, all other provisions will ' +
+            'nevertheless continue to be valid and enforceable with the invalid or unenforceable ' +
+            'parts severed from the remainder of this Agreement.'
+        )
+
+    def waiver(self):
+
+        self.contract.add_heading(
+            'Waiver:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            'The waiver by either Party of a breach, default, delay or omission of any of the ' +
+            'provisions of this Agreement by the other Party will not be construed as a waiver ' +
+            'of any subsequent breach of the same or other provisions.'
+        )
+
+    def in_witness_of(self):
+
+        self.contract.add_heading(
+            'IN WITNESS WHEREOF:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            'IN WITNESS WHEREOF the Parties have duly affixed their signatures under hand ' +
+            'and seal on this {0} day of {1}, {2}.\n'.format(
+                self.date, self.month, self.year
+            )
+        )
+
+    def signatures(self):
+
+        self.contract.add_paragraph(
+            '...................................................................................\n' +
+            '{0}\n'.format(self.client_name)
+        )
+
+        self.contract.add_paragraph(
+            '...................................................................................\n' +
+            '{0}\n'.format(self.service_provider_name)
+        )
+
+
     def save(self):
 
         self.contract.save('contract.docx')
@@ -372,6 +480,7 @@ cg = ContractGenerator("Mr Example", "93 london drive", "camden", "london", "LON
                        "company@company.com",
                        "Responsive Website Development with up to date responsive devices to work across all devices.",
                        "GBP", "100000.00")
+
 cg.heading()
 cg.client_and_service_info()
 cg.background()
@@ -389,4 +498,13 @@ cg.indemnification()
 cg.modification_of_agreement()
 cg.time_of_the_essence()
 cg.assignment()
+cg.entire_agreement()
+cg.enurement()
+cg.titles_headings()
+cg.gender()
+cg.governing_law()
+cg.severability()
+cg.waiver()
+cg.in_witness_of()
+cg.signatures()
 cg.save()
