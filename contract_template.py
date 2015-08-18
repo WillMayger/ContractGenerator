@@ -6,10 +6,12 @@ from datetime import datetime
 
 class ContractGenerator:
 
-    def __init__(self, client_name, client_address, client_town, client_country, client_postcode,
+    def __init__(self, client_name, client_address, client_town, client_country, client_postcode, client_fax,
+                 client_email,
                  service_provider_name, service_provider_address, service_provider_town,
+                 service_provider_fax, service_provider_email,
                  service_provider_country, service_provider_postcode, service_provided, currency,
-                 cost, client_fax, client_email):
+                 cost):
 
         # date time
         now = datetime.now()
@@ -44,6 +46,8 @@ class ContractGenerator:
         self.service_provider_country = service_provider_country
         self.service_provider_postcode = service_provider_postcode
         self.service_provided = service_provided
+        self.service_provider_fax = service_provider_fax
+        self.service_provider_email = service_provider_email
 
         # new instance of Document
         self.contract = Document()
@@ -272,11 +276,11 @@ class ContractGenerator:
 
         self.contract.add_paragraph(
             str(
-                '{0}' +
-                '{1}' +
-                '{2}, {3},{4}' +
-                'Fax: {5}' +
-                'Email: {6}'
+                '1. {0}\n' +
+                '2. {1}\n' +
+                '3. {2}, {3},{4}\n' +
+                '4. Fax: {5}\n' +
+                '5. Email: {6}\n'
             ).format(
             self.client_name,
             self.client_address,
@@ -286,15 +290,88 @@ class ContractGenerator:
             )
         )
 
+        self.contract.add_paragraph(
+            str(
+                '1. {0}\n' +
+                '2. {1}\n' +
+                '3. {2}, {3},{4}\n' +
+                '4. Fax: {5}\n' +
+                '5. Email: {6}\n'
+            ).format(
+            self.service_provider_name,
+            self.service_provider_address,
+            self.service_provider_town, self.service_provider_country, self.service_provider_postcode,
+            self.service_provider_fax,
+            self.service_provider_email
+            )
+        )
+
+        self.contract.add_paragraph(
+            'or to such other address as any Party may from time to time notify the other.'
+        )
+
+    def indemnification(self):
+
+        self.contract.add_heading(
+            'Indemnification:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. Each Party to this Agreement will indemnify and hold harmless the other ' +
+            'Party, as permitted by law, from and against any and all claims, losses, damages, ' +
+            'liabilities, penalties, punitive damages, expenses, reasonable legal fees and costs ' +
+            'of any kind or amount whatsoever to the extent that any of the foregoing is directly ' +
+            'or proximately caused by the negligent or wilful acts or omissions of the indemnifying ' +
+            'Party or its agents or representatives and which result from or arise out of the ' +
+            'indemnifying Party\'s participation in this Agreement. This indemnification will ' +
+            'survive the termination of this Agreement.'
+        )
+
+    def modification_of_agreement(self):
+
+        self.contract.add_heading(
+            'Modification of Agreement:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. Any amendment or modification of this Agreement or additional obligation assumed ' +
+            'by either Party in connection with this Agreement will only be binding if evidenced ' +
+            'in writing signed by each Party or an authorized representative of each Party.'
+        )
+
+    def time_of_the_essence(self):
+
+        self.contract.add_heading(
+            'Time of the Essence:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. Time is of the essence in this Agreement. No extension or variation of ' +
+            'this Agreement will operate as a waiver of this provision.'
+        )
+
+    def assignment(self):
+
+        self.contract.add_heading(
+            'Assignment:\n', 3
+        )
+
+        self.contract.add_paragraph(
+            '1. The Service Provider will not voluntarily or by operation of law assign or ' +
+            'otherwise transfer its obligations under this Agreement without the prior ' +
+            'written consent of the Customer.'
+        )
+
     def save(self):
 
         self.contract.save('contract.docx')
 
 
-cg = ContractGenerator("Mr Example", "93 london drive", "camden", "london", "LON DON",
-                       "Mr Company Example", "93 Company drive", "Regents Place", "London", "LON DON",
+cg = ContractGenerator("Mr Example", "93 london drive", "camden", "london", "LON DON", "fax", "example@example.com",
+                       "Mr Company Example", "93 Company drive", "Regents Place", "London", "LON DON", "fax",
+                       "company@company.com",
                        "Responsive Website Development with up to date responsive devices to work across all devices.",
-                       "GBP", "100000.00", "fax", "example@example.com")
+                       "GBP", "100000.00")
 cg.heading()
 cg.client_and_service_info()
 cg.background()
@@ -308,4 +385,8 @@ cg.ownership_materials_intellectual_property()
 cg.return_of_property()
 cg.capacity_independent_contractor()
 cg.notice()
+cg.indemnification()
+cg.modification_of_agreement()
+cg.time_of_the_essence()
+cg.assignment()
 cg.save()
