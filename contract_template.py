@@ -171,7 +171,7 @@ class ContractGenerator:
             '1. For the services rendered by the Service Provider as required by this Agreement, ' +
             'the Customer will provide compensation (the "Compensation") to the Service Provider ' +
             'of a fixed amount of ' +
-            '163'.encode() +
+             u"\xA3" +
             ' {0}.'.format(self.cost)
         )
 
