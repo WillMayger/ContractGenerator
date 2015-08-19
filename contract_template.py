@@ -35,6 +35,7 @@ class ContractGenerator:
 
         # currency
         self.currency_unit = currency
+        self.currency_symbol = u"\xA3"
 
         # cost
         self.cost = cost
@@ -171,8 +172,8 @@ class ContractGenerator:
             '1. For the services rendered by the Service Provider as required by this Agreement, ' +
             'the Customer will provide compensation (the "Compensation") to the Service Provider ' +
             'of a fixed amount of ' +
-             u"\xA3" +
-            ' {0}.'.format(self.cost)
+            self.currency_symbol +
+            '{0}.'.format( self.cost)
         )
 
         self.contract.add_paragraph(
@@ -475,36 +476,82 @@ class ContractGenerator:
         self.contract.save('contract.docx')
 
 
-cg = ContractGenerator("Mr Example", "93 london drive", "camden", "london", "LON DON", "fax", "example@example.com",
-                       "Mr Company Example", "93 Company drive", "Regents Place", "London", "LON DON", "fax",
-                       "company@company.com",
-                       "Responsive Website Development with up to date responsive devices to work across all devices.",
-                       "GBP", "100000.00")
+# these are the variables that the helper method will take in to use
+client_dictionary = {
+                        'name': 'Mr Example',
+                        'street_address': '93 London drive',
+                        'town': 'Camden',
+                        'country': 'England',
+                        'post_code': 'LON DON',
+                        'fax': 'fax',
+                        'email': 'example@example.com'
+}
 
-cg.heading()
-cg.client_and_service_info()
-cg.background()
-cg.in_consideration_of()
-cg.terms_of_agreement()
-cg.performance()
-cg.currency()
-cg.compensation()
-cg.confidentiality()
-cg.ownership_materials_intellectual_property()
-cg.return_of_property()
-cg.capacity_independent_contractor()
-cg.notice()
-cg.indemnification()
-cg.modification_of_agreement()
-cg.time_of_the_essence()
-cg.assignment()
-cg.entire_agreement()
-cg.enurement()
-cg.titles_headings()
-cg.gender()
-cg.governing_law()
-cg.severability()
-cg.waiver()
-cg.in_witness_of()
-cg.signatures()
-cg.save()
+service_provider_dictionary = {
+                        'name': 'Mr Example C',
+                        'street_address': '93 Company drive',
+                        'town': 'Soho',
+                        'country': 'England',
+                        'post_code': 'LON DON',
+                        'fax': 'fax',
+                        'email': 'example@company.com',
+                        'service_provided': 'Responsive Website Development with up to date responsive devices to work across all devices.'
+}
+
+currency = 'GBP'
+
+cost = '0.00'
+
+# this method will be used to call the class to make passing in variables
+# easier and cleaner and has a preset format of how the contract should look.
+def contract_caller(client_dictionary, service_provider_dictionary, currency, cost):
+
+    # creating the instance and passing in the variables
+    cg = ContractGenerator(
+        client_name=client_dictionary['name'], client_address=client_dictionary['street_address'],
+        client_town=client_dictionary['town'], client_country=client_dictionary['country'],
+        client_postcode=client_dictionary['post_code'], client_fax=client_dictionary['fax'],
+        client_email=client_dictionary['email'],
+        service_provider_name=service_provider_dictionary['name'],
+        service_provider_address=service_provider_dictionary['street_address'],
+        service_provider_town=service_provider_dictionary['town'],
+        service_provider_country=service_provider_dictionary['country'],
+        service_provider_postcode=service_provider_dictionary['post_code'],
+        service_provider_fax=service_provider_dictionary['fax'],
+        service_provider_email=service_provider_dictionary['email'],
+        service_provided=service_provider_dictionary['service_provided'],
+        currency=currency,
+        cost=cost
+    )
+
+    # calling the classes methods in an order to get a contract
+    cg.heading()
+    cg.client_and_service_info()
+    cg.background()
+    cg.in_consideration_of()
+    cg.terms_of_agreement()
+    cg.performance()
+    cg.currency()
+    cg.compensation()
+    cg.confidentiality()
+    cg.ownership_materials_intellectual_property()
+    cg.return_of_property()
+    cg.capacity_independent_contractor()
+    cg.notice()
+    cg.indemnification()
+    cg.modification_of_agreement()
+    cg.time_of_the_essence()
+    cg.assignment()
+    cg.entire_agreement()
+    cg.enurement()
+    cg.titles_headings()
+    cg.gender()
+    cg.governing_law()
+    cg.severability()
+    cg.waiver()
+    cg.in_witness_of()
+    cg.signatures()
+    cg.save()
+
+
+contract_caller(client_dictionary, service_provider_dictionary, currency, cost)
